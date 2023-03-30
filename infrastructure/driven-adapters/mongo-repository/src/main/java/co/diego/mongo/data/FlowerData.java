@@ -19,7 +19,7 @@ public class FlowerData {
     private String color;
     private String type;
     private String origin;
-    private Boolean inStock;
+    private Boolean inStock = true;
 
     public FlowerData(String commonName, String family,
                       String color, String type, String origin) {
