@@ -1,21 +1,67 @@
 package co.diego.mongo;
 
+import co.diego.model.flower.Flower;
+import co.diego.model.flower.gateways.FlowerGateway;
+import co.diego.mongo.data.FlowerData;
 import co.diego.mongo.helper.AdapterOperations;
+import lombok.RequiredArgsConstructor;
 import org.reactivecommons.utils.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Repository
-public class MongoRepositoryAdapter extends AdapterOperations<Object/* change for domain model */, Object/* change for adapter model */, String, MongoDBRepository>
-// implements ModelRepository from domain
-{
+@RequiredArgsConstructor
+public class MongoRepositoryAdapter implements FlowerGateway {
 
-    public MongoRepositoryAdapter(MongoDBRepository repository, ObjectMapper mapper) {
-        /**
-         *  Could be use mapper.mapBuilder if your domain model implement builder pattern
-         *  super(repository, mapper, d -> mapper.mapBuilder(d,ObjectModel.ObjectModelBuilder.class).build());
-         *  Or using mapper.map with the class of the object model
-         */
-        super(repository, mapper, d -> mapper.map(d, Object.class/* change for domain model */));
+    private final MongoDBRepository repository;
+
+    private final ObjectMapper mapper;
+    @Override
+    public Flux<Flower> getAllFlowers() {
+        return this.repository
+                .findAll()
+                .switchIfEmpty(Flux.empty())
+                .map(flowerData -> mapper.map(flowerData, Flower.class));
+    }
+
+    @Override
+    public Mono<Flower> getFlowerById(String flowerId) {
+        return this.repository
+                .findById(flowerId)
+                .switchIfEmpty(Mono.error(new IllegalArgumentException("There is not " +
+                        "flower with id: " + flowerId)))
+                .map(flowerData -> mapper.map(flowerData, Flower.class));
+    }
+
+    @Override
+    public Mono<Flower> saveFlower(Flower flower) {
+        return this.repository
+                .save(mapper.map(flower, FlowerData.class))
+                .switchIfEmpty(Mono.empty())
+                .map(flowerData -> mapper.map(flowerData, Flower.class));
+    }
+
+    @Override
+    public Mono<Flower> updateFlower(String flowerId, Flower flower) {
+        return this.repository
+                .findById(flowerId)
+                .switchIfEmpty(Mono.error(new IllegalArgumentException("There is not " +
+                        "flower with id: " + flowerId)))
+                .flatMap(flowerData -> {
+                    flower.setId(flowerData.getId());
+                    return repository.save(mapper.map(flower, FlowerData.class));
+                })
+                .map(flowerData -> mapper.map(flowerData, Flower.class));
+    }
+
+    @Override
+    public Mono<Void> deleteFlower(String flowerId) {
+        return this.repository
+                .findById(flowerId)
+                .switchIfEmpty(Mono.error(new IllegalArgumentException("There is not " +
+                "flower with id: " + flowerId)))
+                .flatMap(flowerData -> this.repository.deleteById(flowerData.getId()));
     }
 }

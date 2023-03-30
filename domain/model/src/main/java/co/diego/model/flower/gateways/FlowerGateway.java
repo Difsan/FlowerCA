@@ -14,5 +14,5 @@ public interface FlowerGateway {
 
     Mono<Flower> updateFlower(String flowerId, Flower flower);
 
-    Mono<String> deleteFlower(String flowerId);
+    Mono<Void> deleteFlower(String flowerId);
 }
