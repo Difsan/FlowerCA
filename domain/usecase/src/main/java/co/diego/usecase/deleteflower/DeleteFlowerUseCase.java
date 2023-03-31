@@ -12,7 +12,7 @@ public class DeleteFlowerUseCase implements Function<String, Mono<Void>> {
     private final FlowerGateway flowerGateway;
 
     @Override
-    public Mono<Void> apply(String flowerId) {
+    public Mono<Void> apply( String flowerId) {
         return flowerGateway.deleteFlower(flowerId);
     }
 }

@@ -1,12 +1,14 @@
 apply plugin: 'org.springframework.boot'
 
 dependencies {
+    //implementation group: 'org.springframework.boot', name: 'spring-boot-starter-webflux', version: '3.0.4'
 	implementation project( ':reactive-web')
 	implementation 'org.reactivecommons.utils:object-mapper:0.1.0'
 	implementation project( ':mongo-repository')
     implementation project(':model')
     implementation project(':usecase')
     implementation 'org.springframework.boot:spring-boot-starter'
+    implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webflux-ui', version: '2.0.4'
     runtimeOnly('org.springframework.boot:spring-boot-devtools')
 }
 

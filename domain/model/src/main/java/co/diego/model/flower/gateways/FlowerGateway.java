@@ -8,11 +8,11 @@ public interface FlowerGateway {
 
     Flux<Flower> getAllFlowers();
 
-    Mono<Flower> getFlowerById(String flowerId);
+    Mono<Flower> getFlowerById( String flowerId);
 
-    Mono<Flower> saveFlower(Flower flower);
+    Mono<Flower> saveFlower( Flower flower);
 
-    Mono<Flower> updateFlower(String flowerId, Flower flower);
+    Mono<Flower> updateFlower( String flowerId, Flower flower);
 
-    Mono<Void> deleteFlower(String flowerId);
+    Mono<Void> deleteFlower( String flowerId);
 }

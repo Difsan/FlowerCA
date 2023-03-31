@@ -23,3 +23,6 @@ management:
     health:
       probes:
         enabled: true
+springdoc:
+  swagger-ui:
+    path: "/reactive-flowers/swagger-ui.html"
