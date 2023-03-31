@@ -36,7 +36,7 @@ public class MongoRepositoryAdapter implements FlowerGateway {
     }
 
     @Override
-    public Mono<Flower> saveFlower(Flower flower) {
+    public Mono<Flower> saveFlower( Flower flower) {
         return this.repository
                 .save(mapper.map(flower, FlowerData.class))
                 .switchIfEmpty(Mono.empty())

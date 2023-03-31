@@ -8,7 +8,7 @@ public interface FlowerGateway {
 
     Flux<Flower> getAllFlowers();
 
-    Mono<Flower> getFlowerById( String flowerId);
+    Mono<Flower> getFlowerById(String flowerId);
 
     Mono<Flower> saveFlower( Flower flower);
 

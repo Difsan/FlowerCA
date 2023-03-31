@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Configuration
+@EnableMongoRepositories("co.diego.mongo")
 public class MongoConfig {
 
     @Bean
@@ -32,6 +33,12 @@ public class MongoConfig {
         List<MongoClientSettingsBuilderCustomizer> list = new ArrayList<>();
         list.add(new MongoPropertiesClientSettingsBuilderCustomizer(properties));
         return new ReactiveMongoClientFactory(list);
+    }
+
+    @Bean
+    public ValidatingMongoEventListener validatingMongoEventListener(
+            final LocalValidatorFactoryBean factory){
+        return new ValidatingMongoEventListener(factory);
     }
 
 }

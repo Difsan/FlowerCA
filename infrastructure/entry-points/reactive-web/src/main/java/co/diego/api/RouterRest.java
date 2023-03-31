@@ -49,7 +49,8 @@ public class RouterRest {
     @Bean
     @RouterOperation(path = "/flowers/{id}", produces = {
             MediaType.APPLICATION_JSON_VALUE},
-            beanClass = GetFLowerByIDUseCase.class, method = RequestMethod.GET,
+            beanClass = GetFLowerByIDUseCase.class,
+            method = RequestMethod.GET,
             beanMethod = "apply",
             operation = @Operation(operationId = "getFlowerById", tags = "Flowers usecases",
                     responses = {
